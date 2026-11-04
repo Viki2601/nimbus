@@ -1,0 +1,213 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Design tokens. These stay as CSS custom properties and are surfaced to
+   Tailwind through the `@theme` block below, so every utility (bg-sidebar,
+   text-muted, border-line, shadow-card, accent-*, …) resolves to the exact
+   same color/value the original plain CSS used.
+   --------------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+  --background: #eef4fb;
+  --foreground: #122139;
+  --sidebar: rgb(244 248 253 / 78%);
+  --surface: rgb(255 255 255 / 62%);
+  --surface-strong: rgb(255 255 255 / 88%);
+  --surface-hover: rgb(255 255 255 / 91%);
+  --muted: #64758e;
+  --line: rgb(38 71 116 / 14%);
+  --accent: #287fdf;
+  --accent-bright: #176bc8;
+  --accent-dark: #155eb3;
+  --shadow: 0 22px 70px rgb(47 80 122 / 12%);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-sidebar: var(--sidebar);
+  --color-surface: var(--surface);
+  --color-surface-strong: var(--surface-strong);
+  --color-surface-hover: var(--surface-hover);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-bright: var(--accent-bright);
+  --color-accent-dark: var(--accent-dark);
+  --shadow-card: var(--shadow);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* ---------------------------------------------------------------------------
+   Base element styles. These live in Tailwind's `base` layer so utility
+   classes (which sit in the higher-priority `utilities` layer) can still
+   override them — unlayered CSS would beat every utility.
+   --------------------------------------------------------------------------- */
+@layer base {
+  html,
+  body {
+    min-height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(
+        ellipse at 68% 7%,
+        rgb(94 157 226 / 14%),
+        transparent 34%
+      ),
+      var(--background);
+    color: var(--foreground);
+    font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button,
+  textarea {
+    font: inherit;
+  }
+
+  button {
+    color: inherit;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--accent-bright);
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Keyframes referenced by Tailwind's animate-[...] utilities.
+   --------------------------------------------------------------------------- */
+@keyframes rise-in {
+  from {
+    transform: translateY(7px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes typing {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-opacity {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Code blocks. Line numbers (CSS counters) and highlight.js token colors are
+   generated dynamically from `dangerouslySetInnerHTML`, so they stay as CSS.
+   Everything else about the code block is Tailwind utilities in the component.
+   --------------------------------------------------------------------------- */
+.code-body:not(.no-lines) .code-line::before {
+  display: inline-block;
+  width: 2.4em;
+  margin-right: 14px;
+  color: #5b7088;
+  content: counter(line);
+  counter-increment: line;
+  text-align: right;
+  user-select: none;
+}
+
+.code-body.no-lines .code-line {
+  padding-left: 16px;
+}
+
+/* syntax colors */
+.code-line .hljs-keyword,
+.code-line .hljs-doctag,
+.code-line .hljs-template-tag {
+  color: #ff7b72;
+}
+
+.code-line .hljs-string,
+.code-line .hljs-regexp,
+.code-line .hljs-template-variable {
+  color: #a5d6ff;
+}
+
+.code-line .hljs-number,
+.code-line .hljs-literal,
+.code-line .hljs-attr,
+.code-line .hljs-property,
+.code-line .hljs-meta,
+.code-line .hljs-symbol {
+  color: #79c0ff;
+}
+
+.code-line .hljs-title.function_,
+.code-line .hljs-section {
+  color: #d2a8ff;
+}
+
+.code-line .hljs-title.class_,
+.code-line .hljs-built_in,
+.code-line .hljs-type {
+  color: #ffa657;
+}
+
+.code-line .hljs-tag,
+.code-line .hljs-name,
+.code-line .hljs-selector-tag,
+.code-line .hljs-selector-class,
+.code-line .hljs-addition {
+  color: #7ee787;
+}
+
+.code-line .hljs-deletion {
+  color: #ffa198;
+}
+
+.code-line .hljs-comment,
+.code-line .hljs-quote {
+  color: #8b949e;
+  font-style: italic;
+}
+
+.code-line .hljs-variable,
+.code-line .hljs-params {
+  color: #e6edf3;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

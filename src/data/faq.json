@@ -1,0 +1,10 @@
+[
+  { "q": "What is Nimbus?", "a": "Nimbus is a project management tool for small teams: tasks, boards, timelines and shared docs in one place." },
+  { "q": "How much does Nimbus cost?", "a": "Free for up to 3 users. Pro is $8 per user/month. Business is $15 per user/month with SSO and audit logs." },
+  { "q": "Is there a free trial?", "a": "Yes. Pro and Business both include a 14-day free trial, no credit card required." },
+  { "q": "How do I reset my password?", "a": "Go to Settings > Security > Reset password, or use 'Forgot password' on the login page. A reset link is emailed to you." },
+  { "q": "Can I import data from Trello or Asana?", "a": "Yes. Go to Settings > Import and choose Trello, Asana or CSV." },
+  { "q": "How do I cancel my subscription?", "a": "Go to Settings > Billing > Cancel plan. You keep access until the end of the billing period." },
+  { "q": "Do you offer refunds?", "a": "Annual plans can be refunded within 30 days of purchase. Monthly plans are not refundable." },
+  { "q": "How do I contact support?", "a": "Email support@nimbus.example. Business plan customers get replies within 4 hours; others within 24 hours." }
+]
