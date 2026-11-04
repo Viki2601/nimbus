@@ -1,6 +1,6 @@
-import OpenAI from "openai";
 import { buildSystemPrompt } from "@/lib/systemPrompt";
 import { normalizeFileBlocks } from "@/lib/file-blocks";
+import { createOpenRouterClient, OPENROUTER_MODEL } from "@/lib/openrouter";
 import { auth } from "@/../auth";
 import {
   conversationsCollection,
@@ -13,15 +13,17 @@ const MAX_MESSAGE_CHARS = 90_000;
 const MAX_HISTORY = 20;
 const MAX_HISTORY_CHARS = 48_000;
 const MAX_STORED_MESSAGES = 100;
-const OLLAMA_BASE_URL =
-  process.env.OLLAMA_BASE_URL?.trim() || "http://127.0.0.1:11434/v1/";
-const OLLAMA_MODEL = process.env.OLLAMA_MODEL?.trim() || "llama3.2";
-
 export async function POST(req: Request) {
   const session = await auth();
   const userId = session?.user?.id;
   if (!userId) {
     return new Response("Authentication required", { status: 401 });
+  }
+  if (!process.env.OPENROUTER_API_KEY?.trim()) {
+    return new Response(
+      "OpenRouter is not configured. Set OPENROUTER_API_KEY and try again.",
+      { status: 503 },
+    );
   }
 
   let body: unknown;
@@ -127,9 +129,9 @@ export async function POST(req: Request) {
 
   let stream;
   try {
-    const client = new OpenAI({ apiKey: "ollama", baseURL: OLLAMA_BASE_URL });
+    const client = createOpenRouterClient();
     stream = await client.chat.completions.create({
-      model: OLLAMA_MODEL,
+      model: OPENROUTER_MODEL,
       stream: true,
       temperature: 0.3,
       messages: [{ role: "system", content: buildSystemPrompt(profile) }, ...history],
@@ -145,25 +147,32 @@ export async function POST(req: Request) {
 
     if (status === 404) {
       return new Response(
-        `Ollama could not find the "${OLLAMA_MODEL}" model. In a terminal, run: ollama pull ${OLLAMA_MODEL}`,
+        "OpenRouter's free model router is unavailable. Try again later.",
         { status: 404 },
       );
     }
     if (status === 429) {
-      return new Response("Ollama is busy. Wait a moment and try again.", {
-        status: 429,
-      });
+      return new Response(
+        "OpenRouter's free model limit may have been reached. Try again later.",
+        { status: 429 },
+      );
+    }
+    if (status === 401 || status === 403) {
+      return new Response(
+        "OpenRouter rejected the API key. Check OPENROUTER_API_KEY in your deployment settings.",
+        { status: 503 },
+      );
     }
     if (status === undefined) {
       return new Response(
-        "Could not connect to Ollama. Install and start Ollama, then try again.",
+        "Could not connect to OpenRouter. Check your server configuration and try again.",
         { status: 503 },
       );
     }
 
-    console.error("Ollama chat completion request failed.", { status });
+    console.error("OpenRouter chat completion request failed.", { status });
     return new Response(
-      "Ollama could not complete the request. Check the Ollama server logs.",
+      "OpenRouter could not complete the request. Please try again.",
       { status },
     );
   }
@@ -177,9 +186,9 @@ export async function POST(req: Request) {
       if (text) rawReply += text;
     }
   } catch (error) {
-    console.error("Ollama response stream failed.", error);
+    console.error("OpenRouter response stream failed.", error);
     return new Response(
-      "Ollama stopped responding part-way through the reply. Try again.",
+      "OpenRouter stopped responding part-way through the reply. Try again.",
       { status: 502 },
     );
   }

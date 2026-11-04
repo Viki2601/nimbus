@@ -2,20 +2,20 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-### Run the chatbot locally with Ollama
+### Configure chat model
 
-This chatbot uses a local Ollama model, so it does not need an OpenAI API key or a paid API plan.
-Install Ollama from [ollama.com/download](https://ollama.com/download), start Ollama, then download
-the default model:
+Chat completions and automatic conversation titles use OpenRouter's free-model router. Create an
+API key at [OpenRouter](https://openrouter.ai/keys), then set it in your local `.env.local` and in
+the deployment platform's server-side environment variables:
 
-```bash
-ollama pull llama3.2
+```text
+OPENROUTER_API_KEY=your-openrouter-api-key
 ```
 
-If Ollama is not already running, start it with `ollama serve`. To use a different model, pull it
-with Ollama and set `OLLAMA_MODEL` in your environment to its model name. The API endpoint defaults
-to `http://127.0.0.1:11434/v1/`; override it with `OLLAMA_BASE_URL` if your Ollama server uses a
-different address.
+The app uses OpenRouter's `openrouter/free` router, which routes only to free models and does not
+fall back to paid models. Free-model availability and rate limits vary; OpenRouter currently limits
+accounts without purchased credits to 50 free-model requests per day. Keep the API key server-side;
+never expose it in browser code or commit it to the repository.
 
 Nimbot can answer general questions using the selected model's built-in knowledge, and uses the
 included FAQ as the source of truth for Nimbus-specific details. It does not browse the web, so

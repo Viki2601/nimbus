@@ -1,14 +1,10 @@
-import OpenAI from "openai";
 import { auth } from "@/../auth";
 import { conversationsCollection } from "@/lib/user-data";
+import { createOpenRouterClient, OPENROUTER_MODEL } from "@/lib/openrouter";
 
 type RouteContext = {
   params: Promise<{ id: string }>;
 };
-
-const OLLAMA_BASE_URL =
-  process.env.OLLAMA_BASE_URL?.trim() || "http://127.0.0.1:11434/v1/";
-const OLLAMA_MODEL = process.env.OLLAMA_MODEL?.trim() || "llama3.2";
 
 export async function POST(_request: Request, { params }: RouteContext) {
   const session = await auth();
@@ -18,6 +14,15 @@ export async function POST(_request: Request, { params }: RouteContext) {
     return Response.json(
       { error: "Authentication required." },
       { status: 401 },
+    );
+  }
+  if (!process.env.OPENROUTER_API_KEY?.trim()) {
+    return Response.json(
+      {
+        error:
+          "OpenRouter is not configured. Set OPENROUTER_API_KEY and try again.",
+      },
+      { status: 503 },
     );
   }
 
@@ -58,9 +63,9 @@ export async function POST(_request: Request, { params }: RouteContext) {
       );
     }
 
-    const client = new OpenAI({ apiKey: "ollama", baseURL: OLLAMA_BASE_URL });
+    const client = createOpenRouterClient();
     const response = await client.chat.completions.create({
-      model: OLLAMA_MODEL,
+      model: OPENROUTER_MODEL,
       temperature: 0.2,
       max_tokens: 32,
       messages: [
@@ -81,7 +86,7 @@ export async function POST(_request: Request, { params }: RouteContext) {
       .slice(0, 60);
 
     if (!title) {
-      console.error("Ollama returned an empty conversation title.", {
+      console.error("OpenRouter returned an empty conversation title.", {
         conversationId: id,
       });
       return Response.json(
