@@ -1,4 +1,4 @@
-import { Icon } from "./icon";
+import { Icon } from "./icons";
 import { TypingIndicator } from "./typing-indicator";
 
 /* Class strings kept identical to the original plain-CSS values. */

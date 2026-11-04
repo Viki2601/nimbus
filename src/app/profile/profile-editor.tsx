@@ -149,11 +149,12 @@ export default function ProfileEditor({
 
     const reader = new FileReader();
     reader.onload = () => {
-      if (typeof reader.result !== "string") {
+      const avatar = reader.result;
+      if (typeof avatar !== "string") {
         setAvatarError("This image could not be read.");
         return;
       }
-      setProfile((current) => ({ ...current, avatar: reader.result }));
+      setProfile((current) => ({ ...current, avatar }));
       setSaved(false);
     };
     reader.onerror = () => setAvatarError("This image could not be read.");

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Icon } from "./icon";
+import { Icon } from "./icons";
 import {
   DOWNLOADABLE_EXTENSIONS,
   fileKindLabel,

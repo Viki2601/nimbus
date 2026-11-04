@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import type { ClipboardEvent, DragEvent, RefObject } from "react";
-import { Icon } from "./icon";
+import { Icon } from "./icons";
 import { FileCard } from "./file-card";
 import { MAX_ATTACH_FILES, type Attachment } from "./attachments";
 

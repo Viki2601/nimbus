@@ -1,5 +1,5 @@
 import type { RefObject } from "react";
-import { Icon } from "./icon";
+import { Icon } from "./icons";
 import { MarkdownMessage } from "./markdown";
 import { UserMessage } from "./user-message";
 import { TypingIndicator } from "./typing-indicator";

@@ -1,6 +1,6 @@
 "use client";
 import type { RefObject } from "react";
-import { Icon } from "./icon";
+import { Icon } from "./icons";
 import SidebarProfile from "../profile/sidebar-profile";
 import type { ConversationSummary } from "./types";
 

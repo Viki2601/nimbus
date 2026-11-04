@@ -1,5 +1,9 @@
 import { auth } from "@/../auth";
-import { conversationsCollection, type ConversationDocument } from "@/lib/user-data";
+import {
+  conversationsCollection,
+  type ChatMessage,
+  type ConversationDocument,
+} from "@/lib/user-data";
 import { ensureIndexes } from "@/lib/mongodb";
 
 export async function GET() {
@@ -64,7 +68,7 @@ export async function GET() {
           id: conversationId,
           title:
             title ||
-            messages?.find((m) => m.role === "user")?.content.slice(0, 60) ||
+            messages?.find((m: ChatMessage) => m.role === "user")?.content.slice(0, 60) ||
             "New chat",
           titleGenerated: titleGenerated === true,
           hasMessages,

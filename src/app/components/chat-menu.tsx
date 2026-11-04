@@ -1,6 +1,6 @@
 "use client";
 import type { CSSProperties } from "react";
-import { Icon } from "./icon";
+import { Icon } from "./icons";
 
 /* Class strings kept identical to the original plain-CSS values. */
 const CHAT_MENU =
